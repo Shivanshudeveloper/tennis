@@ -14,7 +14,7 @@ const Dashboard = () => (
   <>
     <Head>
       <title>
-        Dashboard | Material Kit
+        CourtTime.io
       </title>
     </Head>
     <Box

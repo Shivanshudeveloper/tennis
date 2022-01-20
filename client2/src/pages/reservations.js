@@ -25,19 +25,19 @@ const Reservations = () => {
   const events = [
     {
       // id: "a",
-      title: "5",
+      title: "Booking 1",
       numberOfPeople: 5,
       start: "2022-01-01",
     },
     {
       // id: "a",
-      title: "4",
+      title: "Booking 2",
       numberOfPeople: 4,
       start: "2022-01-26",
     },
     {
       // id: "a",
-      title: "8",
+      title: "Booking 3",
       numberOfPeople: 8,
       start: "2022-01-11",
     },
@@ -141,7 +141,7 @@ const Reservations = () => {
           py: 8,
         }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth="xl">
           <Typography sx={{ mb: 3 }} variant="h4">
             Reservation
             <Button onClick={handleBookingModal} variant="contained" sx={{ float: "right" }}>

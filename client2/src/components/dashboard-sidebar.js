@@ -13,6 +13,7 @@ import { User as UserIcon } from "../icons/user";
 import { UserAdd as UserAddIcon } from "../icons/user-add";
 import { Users as UsersIcon } from "../icons/users";
 import { XCircle as XCircleIcon } from "../icons/x-circle";
+import EventNoteIcon from '@mui/icons-material/EventNote';
 import { Logo } from "./logo";
 import { NavItem } from "./nav-item";
 
@@ -26,6 +27,11 @@ const items = [
     href: "/reservations",
     icon: <UsersIcon fontSize="small" />,
     title: "Reservations",
+  },
+  {
+    href: "/allbooking",
+    icon: <EventNoteIcon fontSize="small" />,
+    title: "All Booking",
   },
   {
     href: "/account",
