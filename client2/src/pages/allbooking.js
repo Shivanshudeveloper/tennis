@@ -192,7 +192,7 @@ const AllBooking = () => {
                             </TableCell>
                             <TableCell align="center">
                                 <Tooltip title="Edit">
-                                    <IconButton color="primary" aria-label="upload picture" component="span">
+                                    <IconButton onClick={handleBookingModal} color="primary" aria-label="upload picture" component="span">
                                         <EditIcon />
                                     </IconButton>
                                     
@@ -225,7 +225,7 @@ const AllBooking = () => {
                             </TableCell>
                             <TableCell align="center">
                                 <Tooltip title="Edit">
-                                    <IconButton color="primary" aria-label="upload picture" component="span">
+                                    <IconButton onClick={handleBookingModal} color="primary" aria-label="upload picture" component="span">
                                         <EditIcon />
                                     </IconButton>
                                     
@@ -257,7 +257,7 @@ const AllBooking = () => {
                             </TableCell>
                             <TableCell align="center">
                                 <Tooltip title="Edit">
-                                    <IconButton color="primary" aria-label="upload picture" component="span">
+                                    <IconButton onClick={handleBookingModal} color="primary" aria-label="upload picture" component="span">
                                         <EditIcon />
                                     </IconButton>
                                     
