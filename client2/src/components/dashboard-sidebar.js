@@ -16,7 +16,8 @@ import { XCircle as XCircleIcon } from "../icons/x-circle";
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import { Logo } from "./logo";
 import { NavItem } from "./nav-item";
-
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import AnalyticsIcon from '@mui/icons-material/Analytics';
 const items = [
   {
     href: "/",
@@ -25,13 +26,23 @@ const items = [
   },
   {
     href: "/reservations",
-    icon: <UsersIcon fontSize="small" />,
-    title: "Reservations",
+    icon: <CalendarTodayIcon fontSize="small" />,
+    title: "Calendar",
   },
   {
     href: "/allbooking",
     icon: <EventNoteIcon fontSize="small" />,
-    title: "All Booking",
+    title: "Bookings",
+  },
+  {
+    href: "/allbooking",
+    icon: <UsersIcon fontSize="small" />,
+    title: "Members",
+  },
+  {
+    href: "/allbooking",
+    icon: <AnalyticsIcon fontSize="small" />,
+    title: "Analytics",
   },
   {
     href: "/account",
