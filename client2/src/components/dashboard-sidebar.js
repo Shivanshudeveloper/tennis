@@ -35,12 +35,12 @@ const items = [
     title: "Bookings",
   },
   {
-    href: "/allbooking",
+    href: "/customers",
     icon: <UsersIcon fontSize="small" />,
     title: "Members",
   },
   {
-    href: "/allbooking",
+    href: "/analytics",
     icon: <AnalyticsIcon fontSize="small" />,
     title: "Analytics",
   },
