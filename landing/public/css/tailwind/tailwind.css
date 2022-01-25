@@ -673,20 +673,12 @@ Ensure the default browser behavior of the `hidden` attribute.
   display: none;
 }
 
-.h-12 {
-  height: 3rem;
-}
-
 .h-4 {
   height: 1rem;
 }
 
 .h-full {
   height: 100%;
-}
-
-.h-10 {
-  height: 2.5rem;
 }
 
 .h-6 {
@@ -717,6 +709,18 @@ Ensure the default browser behavior of the `hidden` attribute.
   height: 1.25rem;
 }
 
+.h-12 {
+  height: 3rem;
+}
+
+.h-10 {
+  height: 2.5rem;
+}
+
+.w-36 {
+  width: 9rem;
+}
+
 .w-4 {
   width: 1rem;
 }
@@ -731,10 +735,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .w-6 {
   width: 1.5rem;
-}
-
-.w-10 {
-  width: 2.5rem;
 }
 
 .w-16 {
