@@ -19,6 +19,7 @@ const Reservations = () => {
   const [dateValue, setDateValue] = React.useState(new Date());
   const [sTimeValue, setStimeValue] = React.useState(new Date().getTime());
   const [eTimevalue, setEtimeValue] = React.useState(new Date().getTime());
+
   const calendarRef = React.useRef(null);
   const [event, setEvent] = React.useState({});
 
@@ -153,6 +154,7 @@ const Reservations = () => {
           <FullCalendar
             ref={calendarRef}
             plugins={[dayGridPlugin, interactionPlugin]}
+            initialView='dayGridWeek'
             editable
             selectable
             events={events}
