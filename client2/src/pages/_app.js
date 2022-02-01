@@ -6,12 +6,15 @@ import { CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { createEmotionCache } from "../utils/create-emotion-cache";
 import { theme } from "../theme";
+import { app } from "../utils/firebase-config";
+import withAuth from "src/components/withAuth";
 
 const clientSideEmotionCache = createEmotionCache();
 
 import "@fullcalendar/common/main.css";
 import "@fullcalendar/daygrid/main.css";
 import "@fullcalendar/timegrid/main.css";
+import Layout from "src/layout/Layout";
 
 const App = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
@@ -27,7 +30,11 @@ const App = (props) => {
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          {getLayout(<Component {...pageProps} />)}
+          {getLayout(
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          )}
         </ThemeProvider>
       </LocalizationProvider>
     </CacheProvider>

@@ -154,7 +154,7 @@ const Reservations = () => {
           <FullCalendar
             ref={calendarRef}
             plugins={[dayGridPlugin, interactionPlugin]}
-            initialView='dayGridWeek'
+            initialView='dayGridDay'
             editable
             selectable
             events={events}
