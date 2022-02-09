@@ -17,17 +17,17 @@ import { useState, useEffect } from "react";
 
 const Dashboard = () => {
   // const [user, setuser] = useState(null);
-  const Router = useRouter();
-  const auth = getAuth();
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      onAuthStateChanged(auth, (user) => {
-        if (!user) {
-          Router.push("/login");
-        }
-      });
-    }
-  }, []);
+  // const Router = useRouter();
+  // const auth = getAuth();
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     onAuthStateChanged(auth, (user) => {
+  //       if (!user) {
+  //         Router.push("/login");
+  //       }
+  //     });
+  //   }
+  // }, []);
 
   return (
     <>
