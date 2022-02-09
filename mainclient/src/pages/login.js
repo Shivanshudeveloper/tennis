@@ -52,9 +52,9 @@ const Login = () => {
         }}
       >
         <Container maxWidth="sm">
-          <NextLink href="/" passHref>
+          <NextLink href="/reservations" passHref>
             <Button component="a" startIcon={<ArrowBackIcon fontSize="small" />}>
-              Dashboard
+              Calendar
             </Button>
           </NextLink>
           <form onSubmit={formik.handleSubmit}>

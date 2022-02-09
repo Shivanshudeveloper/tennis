@@ -8,6 +8,7 @@ import { createEmotionCache } from "../utils/create-emotion-cache";
 import { theme } from "../theme";
 import { app } from "../utils/firebase-config";
 import withAuth from "src/components/withAuth";
+import "../styles/globalstyles.css";
 
 const clientSideEmotionCache = createEmotionCache();
 

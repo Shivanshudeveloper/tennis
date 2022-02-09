@@ -1,5 +1,5 @@
 import Head from "next/head";
-import React from "react";
+import React, { useEffect } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, Container, Grid, Typography, Button, TextField } from "@mui/material";
 import { Dialog, DialogContent, DialogActions, DialogTitle } from "@mui/material";
@@ -13,8 +13,23 @@ import FullCalendar from "@fullcalendar/react";
 import interactionPlugin from "@fullcalendar/interaction";
 // import timeGridPlugin from "@fullcalendar/timegrid";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+
+import { useRouter } from "next/router";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const Reservations = () => {
+  const Router = useRouter();
+  const auth = getAuth();
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      onAuthStateChanged(auth, (user) => {
+        if (!user) {
+          Router.push("/login");
+        }
+      });
+    }
+  }, []);
   const [showBookingModal, setShowBookingModal] = React.useState(false);
   const [dateValue, setDateValue] = React.useState(new Date());
   const [sTimeValue, setStimeValue] = React.useState(new Date().getTime());
@@ -152,7 +167,8 @@ const Reservations = () => {
           {/* <Grid container spacing={3}> */}
           <FullCalendar
             ref={calendarRef}
-            plugins={[dayGridPlugin, interactionPlugin]}
+            plugins={[timeGridPlugin, interactionPlugin]}
+            initialView="timeGridWeek"
             editable
             selectable
             events={events}

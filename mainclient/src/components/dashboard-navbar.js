@@ -12,6 +12,8 @@ import {
   Tooltip,
   Menu,
   MenuItem,
+  Button,
+  Link,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
@@ -144,6 +146,11 @@ export const DashboardNavbar = (props) => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
+              <MenuItem>
+                <Link href="/account" sx={{ textDecoration: "none", color: "black" }}>
+                  <Typography textAlign="center">Account Settings</Typography>
+                </Link>
+              </MenuItem>
               <MenuItem key={"logout"} onClick={logoutUser}>
                 <Typography textAlign="center">Logout</Typography>
               </MenuItem>
