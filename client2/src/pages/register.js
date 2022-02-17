@@ -14,6 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import axios from "axios";
 
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 const auth = getAuth();
@@ -26,6 +27,7 @@ const Register = () => {
       firstName: "",
       lastName: "",
       password: "",
+      phoneNumber: "",
       policy: false,
     },
     validationSchema: Yup.object({
@@ -33,14 +35,19 @@ const Register = () => {
       firstName: Yup.string().max(255).required("First name is required"),
       lastName: Yup.string().max(255).required("Last name is required"),
       password: Yup.string().max(255).required("Password is required"),
+      phoneNumber: Yup.string().min(10).max(10).required("Phone number is required"),
       policy: Yup.boolean().oneOf([true], "This field must be checked"),
     }),
     onSubmit: () => {
       router.push("/");
+
       createUserWithEmailAndPassword(auth, formik.values.email, formik.values.password)
-        .then((userCredential) => {
-          console.log();
+        .then((result) => {
+          var newUser = result.user;
           // Signed in
+
+          sessionStorage.setItem("userId", newUser.uid);
+          sessionStorage.setItem("userEmail", newUser.email);
 
           updateProfile(auth.currentUser, {
             displayName: `${formik.values.firstName} ${formik.values.lastName}`,
@@ -54,8 +61,23 @@ const Register = () => {
               console.log(`An error occurred`);
             });
 
-          const user = userCredential.user;
-          console.log(user);
+          const userToRegister = {
+            firstName: formik.values.firstName,
+            lastName: formik.values.lastName,
+            email: formik.values.email,
+            phoneNumber: formik.values.phoneNumber,
+            registrationDate: new Date(),
+            userId: newUser.uid
+          }
+          let baseURL = `http://localhost:5000/api/v1/main/users`;
+
+          axios.post(baseURL, userToRegister)
+            .then((res) => {
+              console.log(res.data)
+            })
+
+          // const user = userCredential.user;
+          console.log(newUser);
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -129,6 +151,19 @@ const Register = () => {
               onChange={formik.handleChange}
               type="email"
               value={formik.values.email}
+              variant="outlined"
+            />
+            <TextField
+              error={Boolean(formik.touched.phoneNumber && formik.errors.phoneNumber)}
+              fullWidth
+              helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+              label="Phone Number"
+              margin="normal"
+              name="phoneNumber"
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              type="number"
+              value={formik.values.phoneNumber}
               variant="outlined"
             />
             <TextField

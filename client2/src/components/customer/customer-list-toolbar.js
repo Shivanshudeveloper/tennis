@@ -11,8 +11,11 @@ import { Search as SearchIcon } from '../../icons/search';
 import { Upload as UploadIcon } from '../../icons/upload';
 import { Download as DownloadIcon } from '../../icons/download';
 
-export const CustomerListToolbar = (props) => (
-  <Box {...props}>
+export const CustomerListToolbar = (props) => {
+  console.log(props)
+
+
+  return <Box {...props}>
     <Box
       sx={{
         alignItems: 'center',
@@ -75,4 +78,4 @@ export const CustomerListToolbar = (props) => (
       </Card>
     </Box>
   </Box>
-);
+};

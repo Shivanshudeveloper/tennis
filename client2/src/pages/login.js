@@ -28,7 +28,9 @@ const Login = () => {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          // ...
+
+          sessionStorage.setItem("userId", user.uid);
+          sessionStorage.setItem("userEmail", user.email);
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -66,7 +68,7 @@ const Login = () => {
                 Sign in on the internal platform
               </Typography>
             </Box>
-            <Grid container spacing={3}>
+            {/* <Grid container spacing={3}>
               <Grid item xs={12} md={6}>
                 <Button
                   color="info"
@@ -91,7 +93,7 @@ const Login = () => {
                   Login with Google
                 </Button>
               </Grid>
-            </Grid>
+            </Grid> */}
             <Box
               sx={{
                 pb: 1,
@@ -99,7 +101,7 @@ const Login = () => {
               }}
             >
               <Typography align="center" color="textSecondary" variant="body1">
-                or login with email address
+                Login with email address
               </Typography>
             </Box>
             <TextField
