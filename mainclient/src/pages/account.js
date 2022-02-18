@@ -1,11 +1,15 @@
 import Head from 'next/head';
+import { useState } from 'react';
 import { Box, Container, Grid, Typography } from '@mui/material';
 import { AccountProfile } from '../components/account/account-profile';
 import { AccountProfileDetails } from '../components/account/account-profile-details';
 import { DashboardLayout } from '../components/dashboard-layout';
 
-const Account = () => (
-  <>
+const Account = () => {
+
+  let [toggler, setToggler] = useState(false)
+
+  return <>
     <Head>
       <title>
         Account | Material Kit
@@ -35,7 +39,7 @@ const Account = () => (
             md={6}
             xs={12}
           >
-            <AccountProfile />
+            <AccountProfile toggler={toggler} setToggler={setToggler} />
           </Grid>
           <Grid
             item
@@ -43,13 +47,13 @@ const Account = () => (
             md={6}
             xs={12}
           >
-            <AccountProfileDetails />
+            <AccountProfileDetails toggler={toggler} setToggler={setToggler} />
           </Grid>
         </Grid>
       </Container>
     </Box>
   </>
-);
+};
 
 Account.getLayout = (page) => (
   <DashboardLayout>

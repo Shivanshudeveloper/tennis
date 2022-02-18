@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Box,
   Button,
@@ -9,6 +9,9 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
+import axios from "axios";
+// Get access to the sessionStorage object for userId and userEmail
+import useSessionStorage from "src/hooks/useSessionStorage";
 
 const states = [
   {
@@ -48,6 +51,42 @@ export const AccountProfileDetails = (props) => {
     });
   };
 
+
+  function updateDetails() {
+    if (!userId || !user)
+      return
+
+    let baseURL = `http://localhost:5000/api/v1/main/users/${userId}`;
+
+    axios.patch(baseURL, user)
+      .then((res) => {
+        props.setToggler(!props.toggler)
+      })
+      .catch((err) => { throw err })
+  }
+
+  // Get the current user's information based on the userId
+  const userId = useSessionStorage('userId')
+  let [user, setUser] = useState()
+
+  useEffect(() => {
+
+    if (!userId)
+      return
+
+    let baseURL = `http://localhost:5000/api/v1/main/users/${userId}`;
+
+    axios.get(baseURL)
+      .then(result => {
+        setUser(result.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+
+
+  }, [userId, props.toggler])
+
   return (
     <form autoComplete="off" noValidate {...props}>
       <Card>
@@ -59,127 +98,87 @@ export const AccountProfileDetails = (props) => {
               <TextField
                 fullWidth
                 helperText="Please specify the first name"
-                label="First name"
+                // label="First name"
                 name="firstName"
-                onChange={handleChange}
+                onChange={(e) => {
+                  setUser((prevVal) => {
+
+                    let { name, value } = e.target
+
+                    return {
+                      ...prevVal,
+                      [name]: value
+                    }
+                  })
+                }}
                 required
-                value={values.firstName}
+                value={user?.firstName}
                 variant="outlined"
               />
             </Grid>
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                label="Last name"
+                // label="Last name"
                 name="lastName"
-                onChange={handleChange}
+                onChange={(e) => {
+                  setUser((prevVal) => {
+
+                    let { name, value } = e.target
+
+                    return {
+                      ...prevVal,
+                      [name]: value
+                    }
+                  })
+                }}
                 required
-                value={values.lastName}
+                value={user?.lastName}
                 variant="outlined"
               />
             </Grid>
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                label="Email Address"
+                // label="Email Address"
                 name="email"
                 onChange={handleChange}
                 required
-                value={values.email}
+                value={user?.email}
                 variant="outlined"
+                onChange={(e) => {
+                  setUser((prevVal) => {
+
+                    let { name, value } = e.target
+
+                    return {
+                      ...prevVal,
+                      [name]: value
+                    }
+                  })
+                }}
               />
             </Grid>
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                label="Phone Number"
-                name="phone"
+                // label="Phone Number"
+                name="phoneNumber"
                 onChange={handleChange}
                 type="number"
-                value={values.phone}
+                value={user?.phoneNumber}
                 variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Country"
-                name="country"
-                onChange={handleChange}
-                required
-                value={values.country}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Select State"
-                name="state"
-                onChange={handleChange}
-                required
-                select
-                SelectProps={{ native: true }}
-                value={values.state}
-                variant="outlined"
-              >
-                {states.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </TextField>
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Tennis Court Name"
-                name="tennisCourtName"
-                onChange={handleChange}
-                required
-                value={values.tennisCourtName}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Tennis Court Description"
-                name="tennisCourtDesc"
-                onChange={handleChange}
-                required
-                value={values.tennisCourtDesc}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Tennis Court Tag Line"
-                name="tennisCourtTag"
-                onChange={handleChange}
-                required
-                value={values.tennisCourtTag}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <Button
-                color="primary"
-                fullWidth
-                variant="outlined"
-                onClick={() => logoInput.current.click()}
-                sx={{ py: 1.6 }}
-              >
-                Upload Tennis Court Logo
-              </Button>
-              <input
-                style={{ display: "none" }}
-                type="file"
-                ref={logoInput}
-                value={values.tennisCourtLogo}
-                name="tennisCourtLogo"
-                onChange={handleChange}
+                onChange={(e) => {
+                  setUser((prevVal) => {
+
+                    let { name, value } = e.target
+
+                    return {
+                      ...prevVal,
+                      [name]: value
+                    }
+                  })
+                }}
               />
             </Grid>
           </Grid>
@@ -192,7 +191,9 @@ export const AccountProfileDetails = (props) => {
             p: 2,
           }}
         >
-          <Button color="primary" variant="contained">
+          <Button color="primary" variant="contained"
+            onClick={updateDetails}
+          >
             Save details
           </Button>
         </Box>

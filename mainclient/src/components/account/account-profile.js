@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Avatar,
   Box,
@@ -9,24 +9,40 @@ import {
   Divider,
   Typography,
 } from "@mui/material";
-
-const user = {
-  avatar: "/static/images/avatars/avatar_6.png",
-  city: "Los Angeles",
-  country: "USA",
-  jobTitle: "Senior Developer",
-  name: "Katarina Smith",
-  timezone: "GTM-7",
-};
+import axios from "axios";
+// Get access to the sessionStorage object for userId and userEmail
+import useSessionStorage from "src/hooks/useSessionStorage";
 
 export const AccountProfile = (props) => {
-  const [profilePic, setProfilePic] = useState("");
-  const [bannerPic, setBannerPic] = useState("");
-  const profileInput = useRef();
-  const bannerInput = useRef();
+  // const [profilePic, setProfilePic] = useState("");
+  // const [bannerPic, setBannerPic] = useState("");
+  // const profileInput = useRef();
+  // const bannerInput = useRef();
 
-  console.log("profile: ", profilePic);
-  console.log("banner: ", bannerPic);
+  // console.log("profile: ", profilePic);
+  // console.log("banner: ", bannerPic);
+
+  const userId = useSessionStorage('userId')
+  let [user, setUser] = useState()
+
+  useEffect(() => {
+
+    if (!userId)
+      return
+
+    let baseURL = `http://localhost:5000/api/v1/main/users/${userId}`;
+
+    axios.get(baseURL)
+      .then(result => {
+        setUser(result.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+
+
+  }, [userId, props.toggler])
+
 
   return (
     <Card {...props}>
@@ -39,7 +55,7 @@ export const AccountProfile = (props) => {
           }}
         >
           <Avatar
-            src={user.avatar}
+            src="/static/images/avatars/avatar_6.png"
             sx={{
               height: 64,
               mb: 2,
@@ -47,49 +63,11 @@ export const AccountProfile = (props) => {
             }}
           />
           <Typography color="textPrimary" gutterBottom variant="h5">
-            {user.name}
-          </Typography>
-          <Typography color="textSecondary" variant="body2">
-            {`${user.city} ${user.country}`}
-          </Typography>
-          <Typography color="textSecondary" variant="body2">
-            {user.timezone}
+            {user?.firstName + " " + user?.lastName}
           </Typography>
         </Box>
       </CardContent>
       <Divider />
-      <CardActions sx={{ display: "flex", flexDirection: "column" }}>
-        <Button
-          color="primary"
-          fullWidth
-          variant="text"
-          onClick={() => profileInput.current.click()}
-        >
-          Upload profile picture
-        </Button>
-        <input
-          style={{ display: "none" }}
-          type="file"
-          ref={profileInput}
-          value={profilePic}
-          onChange={(e) => setProfilePic(e.target.value)}
-        />
-        <Button
-          color="primary"
-          fullWidth
-          variant="text"
-          onClick={() => bannerInput.current.click()}
-        >
-          Upload banner picture
-        </Button>
-        <input
-          style={{ display: "none" }}
-          type="file"
-          ref={bannerInput}
-          value={bannerPic}
-          onChange={(e) => setBannerPic(e.target.value)}
-        />
-      </CardActions>
     </Card>
   );
 };

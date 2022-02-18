@@ -28,7 +28,9 @@ const Login = () => {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          // ...
+
+          sessionStorage.setItem("userId", user.uid);
+          sessionStorage.setItem("userEmail", user.email);
         })
         .catch((error) => {
           const errorCode = error.code;

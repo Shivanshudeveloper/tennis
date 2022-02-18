@@ -256,7 +256,7 @@ router.post("/bookings", async (req, res) => {
 })
 
 // Database CRUD Operations
-// Get all the agreements corresponding to a user_id
+// Get all the bookings corresponding to a user_id
 // GET
 router.get("/bookings/:userId", async (req, res) => {
 
@@ -272,13 +272,29 @@ router.get("/bookings/:userId", async (req, res) => {
 })
 
 // Database CRUD Operations
+// Get all the "Accepted" bookings corresponding to a user_id
+// GET
+router.get("/acceptedBookings/:userId", async (req, res) => {
+
+  res.setHeader("Content-Type", "application/json");
+
+  Booking_Model.find({ userId: req.params.userId, status: "Accepted" }, (err, bookings) => {
+    if (err)
+      res.status(400).json(`Error: ${err}`)
+    else
+      res.status(200).json(bookings)
+  }
+  )
+})
+
+// Database CRUD Operations
 // Get an existing booking based on the booking id
 // GET
 router.get("/getBooking/:booking_id", async (req, res) => {
 
   res.setHeader("Content-Type", "application/json");
 
-  console.log(req.body, "\n", req.params)
+  // console.log(req.body, "\n", req.params)
 
   Booking_Model.findById({ _id: req.params.booking_id }, (err, booking) => {
     if (err)
@@ -363,6 +379,38 @@ router.get("/users", async (req, res) => {
 })
 
 // Database CRUD Operations
+// Get a user corresponding to the given userId
+// GET
+router.get("/users/:userId", async (req, res) => {
+
+  res.setHeader("Content-Type", "application/json");
+
+  RegisteredUser_Model.findOne({ userId: req.params.userId }, (err, user) => {
+    if (err)
+      res.status(400).json(`Error: ${err}`)
+    else
+      res.status(200).json(user)
+  }
+  )
+})
+
+router.patch("/users/:userId", async (req, res) => {
+
+  res.setHeader("Content-Type", "application/json");
+
+  RegisteredUser_Model.updateOne({ userId: req.params.userId },
+    {
+      $set: req.body
+    },
+    (err) => {
+      if (err)
+        res.status(400).json(`Error: ${err}`)
+      else
+        res.status(200).send("Patched one user")
+    })
+})
+
+// Database CRUD Operations
 // Get users whose names are like the given query
 // GET
 router.get("/findUsers/:query", async (req, res) => {
@@ -374,7 +422,7 @@ router.get("/findUsers/:query", async (req, res) => {
   RegisteredUser_Model.find({
     "$expr": {
       "$regexMatch": {
-        "input": { "$concat": ["$firstName", " ", "$lastName", " ", "$email"] },
+        "input": { "$concat": ["$firstName", " ", "$lastName", " ", "$email", " ", "$phoneNumber"] },
         "regex": query,
         "options": "i"
       }
