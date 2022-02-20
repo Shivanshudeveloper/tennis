@@ -107,6 +107,7 @@ const Register = () => {
               Dashboard
             </Button>
           </NextLink>
+
           <form onSubmit={formik.handleSubmit}>
             <Box sx={{ my: 3 }}>
               <Typography color="textPrimary" variant="h4">

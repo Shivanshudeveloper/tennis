@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Box,
   Button,
@@ -9,9 +9,20 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
-import axios from "axios";
 // Get access to the sessionStorage object for userId and userEmail
 import useSessionStorage from "src/hooks/useSessionStorage";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import {
+  Checkbox,
+  FormHelperText,
+  Link,
+  Typography,
+} from "@mui/material";
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+const auth = getAuth();
+import axios from "axios";
+import NextLink from "next/link";
 
 const states = [
   {
@@ -29,41 +40,6 @@ const states = [
 ];
 
 export const AccountProfileDetails = (props) => {
-  const logoInput = useRef();
-
-  const [values, setValues] = useState({
-    firstName: "Katarina",
-    lastName: "Smith",
-    email: "demo@devias.io",
-    phone: "",
-    state: "Alabama",
-    country: "USA",
-    tennisCourtName: "",
-    tennisCourtDesc: "",
-    tennisCourtTag: "",
-    tennisCourtLogo: "",
-  });
-
-  const handleChange = (event) => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value,
-    });
-  };
-
-
-  function updateDetails() {
-    if (!userId || !user)
-      return
-
-    let baseURL = `http://localhost:5000/api/v1/main/users/${userId}`;
-
-    axios.patch(baseURL, user)
-      .then((res) => {
-        props.setToggler(!props.toggler)
-      })
-      .catch((err) => { throw err })
-  }
 
   // Get the current user's information based on the userId
   const userId = useSessionStorage('userId')
@@ -87,117 +63,132 @@ export const AccountProfileDetails = (props) => {
 
   }, [userId, props.toggler])
 
+
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: user ? user : {
+      email: "",
+      firstName: "",
+      lastName: "",
+      phoneNumber: ""
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email("Must be a valid email").max(255).required("Email is required"),
+      firstName: Yup.string().max(255).required("First name is required"),
+      lastName: Yup.string().max(255).required("Last name is required"),
+      phoneNumber: Yup.string().min(10).max(10).required("Phone number is required")
+    }),
+    onSubmit: () => {
+      if (!userId || !user)
+        return
+
+      let baseURL = `http://localhost:5000/api/v1/main/users/${userId}`;
+
+      let updatedUser = {
+        email: formik.values.email,
+        firstName: formik.values.firstName,
+        lastName: formik.values.lastName,
+        phoneNumber: formik.values.phoneNumber
+      }
+
+      axios.patch(baseURL, updatedUser)
+        .then((res) => {
+          props.setToggler(!props.toggler)
+        })
+        .catch((err) => { throw err })
+    },
+  });
+
   return (
-    <form autoComplete="off" noValidate {...props}>
-      <Card>
-        <CardHeader subheader="The information can be edited" title="Profile" />
-        <Divider />
-        <CardContent>
-          <Grid container spacing={3}>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                helperText="Please specify the first name"
-                // label="First name"
-                name="firstName"
-                onChange={(e) => {
-                  setUser((prevVal) => {
-
-                    let { name, value } = e.target
-
-                    return {
-                      ...prevVal,
-                      [name]: value
-                    }
-                  })
-                }}
-                required
-                value={user?.firstName}
-                variant="outlined"
-              />
+    <>
+      <form onSubmit={formik.handleSubmit}>
+        <Card>
+          <CardHeader subheader="The information can be edited" title="Profile" />
+          <Divider />
+          <CardContent>
+            <Grid container spacing={3}>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  error={Boolean(formik.touched.firstName && formik.errors.firstName)}
+                  fullWidth
+                  helperText={formik.touched.firstName && formik.errors.firstName}
+                  label="First Name"
+                  margin="normal"
+                  name="firstName"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  value={formik.values.firstName}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  error={Boolean(formik.touched.lastName && formik.errors.lastName)}
+                  fullWidth
+                  helperText={formik.touched.lastName && formik.errors.lastName}
+                  label="Last Name"
+                  margin="normal"
+                  name="lastName"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  value={formik.values.lastName}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  error={Boolean(formik.touched.email && formik.errors.email)}
+                  fullWidth
+                  helperText={formik.touched.email && formik.errors.email}
+                  label="Email Address"
+                  margin="normal"
+                  name="email"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  type="email"
+                  value={formik.values.email}
+                  variant="outlined"
+                />
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <TextField
+                  error={Boolean(formik.touched.phoneNumber && formik.errors.phoneNumber)}
+                  fullWidth
+                  helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+                  label="Phone Number"
+                  margin="normal"
+                  name="phoneNumber"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  type="number"
+                  value={formik.values.phoneNumber}
+                  variant="outlined"
+                />
+              </Grid>
             </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                // label="Last name"
-                name="lastName"
-                onChange={(e) => {
-                  setUser((prevVal) => {
-
-                    let { name, value } = e.target
-
-                    return {
-                      ...prevVal,
-                      [name]: value
-                    }
-                  })
-                }}
-                required
-                value={user?.lastName}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                // label="Email Address"
-                name="email"
-                onChange={handleChange}
-                required
-                value={user?.email}
-                variant="outlined"
-                onChange={(e) => {
-                  setUser((prevVal) => {
-
-                    let { name, value } = e.target
-
-                    return {
-                      ...prevVal,
-                      [name]: value
-                    }
-                  })
-                }}
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                // label="Phone Number"
-                name="phoneNumber"
-                onChange={handleChange}
-                type="number"
-                value={user?.phoneNumber}
-                variant="outlined"
-                onChange={(e) => {
-                  setUser((prevVal) => {
-
-                    let { name, value } = e.target
-
-                    return {
-                      ...prevVal,
-                      [name]: value
-                    }
-                  })
-                }}
-              />
-            </Grid>
-          </Grid>
-        </CardContent>
-        <Divider />
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-            p: 2,
-          }}
-        >
-          <Button color="primary" variant="contained"
-            onClick={updateDetails}
+          </CardContent>
+          <Divider />
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              p: 2,
+            }}
           >
-            Save details
-          </Button>
-        </Box>
-      </Card>
-    </form>
+            <Button
+              color="primary"
+              disabled={formik.isSubmitting}
+              fullWidth
+              size="large"
+              type="submit"
+              variant="contained"
+            >
+              Save
+            </Button>
+          </Box>
+        </Card>
+
+      </form>
+    </>
   );
 };
