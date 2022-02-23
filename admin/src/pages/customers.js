@@ -30,6 +30,7 @@ import Chip from '@mui/material/Chip';
 import EditIcon from '@mui/icons-material/Edit';
 import DoDisturbAltIcon from '@mui/icons-material/DoDisturbAlt';
 import CheckIcon from '@mui/icons-material/Check';
+import { API_SERVICE } from "src/config/URI";
 
 
 const Customers = () => {
@@ -38,7 +39,7 @@ const Customers = () => {
   let [toggler, setToggler] = useState(false)
   useEffect(() => {
 
-    let baseURL = `http://localhost:5000/api/v1/main/users`;
+    let baseURL = `${API_SERVICE}/api/v1/main/users`;
 
     axios.get(baseURL)
       .then((res) => {
@@ -66,7 +67,7 @@ const Customers = () => {
 
     console.log(query)
 
-    let baseURL = `http://localhost:5000/api/v1/main/findUsers/${query}`;
+    let baseURL = `${API_SERVICE}/api/v1/main/findUsers/${query}`;
 
     axios.get(baseURL, query)
       .then((res) => {
@@ -88,7 +89,7 @@ const Customers = () => {
       return
 
     // Get all the bookings of the selected user
-    let baseURL = `http://localhost:5000/api/v1/main/bookings/${selectedUser}`;
+    let baseURL = `${API_SERVICE}/api/v1/main/bookings/${selectedUser}`;
 
     await axios.get(baseURL)
       .then((res) => {
@@ -126,7 +127,7 @@ const Customers = () => {
   }
 
   function acceptBooking(booking) {
-    let baseURL = `http://localhost:5000/api/v1/main/bookings/${booking._id}`;
+    let baseURL = `${API_SERVICE}/api/v1/main/bookings/${booking._id}`;
 
     let editedBooking = {
       ...booking,
@@ -141,7 +142,7 @@ const Customers = () => {
   }
 
   function rejectBooking(booking) {
-    let baseURL = `http://localhost:5000/api/v1/main/bookings/${booking._id}`;
+    let baseURL = `${API_SERVICE}/api/v1/main/bookings/${booking._id}`;
 
     let editedBooking = {
       ...booking,

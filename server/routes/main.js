@@ -287,6 +287,19 @@ router.get("/acceptedBookings/:userId", async (req, res) => {
   )
 })
 
+router.get("/acceptedBookingsAdmin", async (req, res) => {
+
+  res.setHeader("Content-Type", "application/json");
+
+  Booking_Model.find({ status: "Accepted" }, (err, bookings) => {
+    if (err)
+      res.status(400).json(`Error: ${err}`)
+    else
+      res.status(200).json(bookings)
+  }
+  )
+})
+
 // Database CRUD Operations
 // Get an existing booking based on the booking id
 // GET

@@ -25,6 +25,7 @@ import { DashboardLayout } from "../components/dashboard-layout";
 import axios from "axios";
 // Get access to the sessionStorage object for userId and userEmail
 import useSessionStorage from "src/hooks/useSessionStorage";
+import { API_SERVICE } from "src/config/URI";
 
 const AllBooking = () => {
 
@@ -75,7 +76,7 @@ const AllBooking = () => {
             userId
         }
 
-        let baseURL = `http://localhost:5000/api/v1/main/bookings`;
+        let baseURL = `${API_SERVICE}/api/v1/main/bookings`;
 
         axios.post(baseURL, bookingToCreate)
             .then((res) => {
@@ -113,7 +114,7 @@ const AllBooking = () => {
 
     // Delete a booking
     function deleteBooking(bookingId) {
-        let baseURL = `http://localhost:5000/api/v1/main/bookings/${bookingId}`;
+        let baseURL = `${API_SERVICE}/api/v1/main/bookings/${bookingId}`;
 
         axios.delete(baseURL)
             .then(result => {
@@ -137,7 +138,7 @@ const AllBooking = () => {
             return
 
         // Once the userId is set make a get request
-        let baseURL = `http://localhost:5000/api/v1/main/bookings/${userId}`;
+        let baseURL = `${API_SERVICE}/api/v1/main/bookings/${userId}`;
 
         await axios.get(baseURL)
             .then((res) => {
@@ -188,7 +189,7 @@ const AllBooking = () => {
         if (!showEditingModel)
             return;
 
-        let baseURL = `http://localhost:5000/api/v1/main/getBooking/${selectedBooking}`;
+        let baseURL = `${API_SERVICE}/api/v1/main/getBooking/${selectedBooking}`;
 
         axios.get(baseURL)
             .then((res) => {
@@ -219,7 +220,7 @@ const AllBooking = () => {
             status: "Pending"
         }
 
-        let baseURL = `http://localhost:5000/api/v1/main/bookings/${selectedBooking}`;
+        let baseURL = `${API_SERVICE}/api/v1/main/bookings/${selectedBooking}`;
 
         axios.patch(baseURL, editedBooking)
             .then((res) => {

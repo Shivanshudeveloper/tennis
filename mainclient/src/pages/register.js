@@ -18,6 +18,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 const auth = getAuth();
 import axios from "axios";
+import { API_SERVICE } from "src/config/URI";
 
 const Register = () => {
   const router = useRouter();
@@ -69,7 +70,7 @@ const Register = () => {
             registrationDate: new Date(),
             userId: newUser.uid
           }
-          let baseURL = `http://localhost:5000/api/v1/main/users`;
+          let baseURL = `${API_SERVICE}/api/v1/main/users`;
 
           axios.post(baseURL, userToRegister)
             .then((res) => {

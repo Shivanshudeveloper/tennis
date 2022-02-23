@@ -20,6 +20,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import axios from "axios";
 // Get access to the sessionStorage object for userId and userEmail
 import useSessionStorage from "src/hooks/useSessionStorage";
+import { API_SERVICE } from "src/config/URI";
 
 const Reservations = () => {
   const Router = useRouter();
@@ -63,7 +64,7 @@ const Reservations = () => {
       return
 
     // Once the userId is set make a get request
-    let baseURL = `http://localhost:5000/api/v1/main/acceptedBookings/${userId}`;
+    let baseURL = `${API_SERVICE}/api/v1/main/acceptedBookings/${userId}`;
 
     await axios.get(baseURL)
       .then((res) => {
@@ -129,7 +130,7 @@ const Reservations = () => {
       userId
     }
 
-    let baseURL = `http://localhost:5000/api/v1/main/bookings`;
+    let baseURL = `${API_SERVICE}/api/v1/main/bookings`;
 
     axios.post(baseURL, bookingToCreate)
       .then((res) => {
@@ -177,7 +178,7 @@ const Reservations = () => {
 
     openViewer()
 
-    let baseURL = `http://localhost:5000/api/v1/main/getBooking/${selectedEvent}`;
+    let baseURL = `${API_SERVICE}/api/v1/main/getBooking/${selectedEvent}`;
 
     axios.get(baseURL)
       .then((res) => {
@@ -197,7 +198,7 @@ const Reservations = () => {
   }, [selectedEvent])
 
   function cancelReservation() {
-    let baseURL = `http://localhost:5000/api/v1/main/bookings/${selectedEvent}`;
+    let baseURL = `${API_SERVICE}/api/v1/main/bookings/${selectedEvent}`;
 
     axios.delete(baseURL)
       .then(result => {

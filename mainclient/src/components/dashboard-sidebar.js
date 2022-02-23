@@ -33,21 +33,10 @@ const items = [
     icon: <ChartBarIcon fontSize="small" />,
     title: "Dashboard",
   },
-
   {
     href: "/allbooking",
     icon: <EventNoteIcon fontSize="small" />,
     title: "Bookings",
-  },
-  {
-    href: "/customers",
-    icon: <UsersIcon fontSize="small" />,
-    title: "Members",
-  },
-  {
-    href: "/analytics",
-    icon: <AnalyticsIcon fontSize="small" />,
-    title: "Analytics",
   },
   // {
   //   href: "/account",
